@@ -95,41 +95,6 @@ android {
     }
 }
 
-tasks.register<Download>("downloadKpimg") {
-    src("https://github.com/bmax121/KernelPatch/releases/download/${kernelPatchVersion}/kpimg-android")
-    dest(file("${project.projectDir}/src/main/assets/kpimg"))
-    onlyIfNewer(true)
-    overwrite(true)
-}
-
-tasks.register<Download>("downloadKpatch") {
-    src("https://github.com/Arturmes/KernelPatch32/releases/download/${kernelPatchVersion}/kpatch-android")
-    dest(file("${project.projectDir}/libs/armeabi-v7a/libkpatch.so"))
-    onlyIfNewer(true)
-    overwrite(true)
-}
-
-tasks.register<Download>("downloadKptools") {
-    src("https://github.com/Arturmes/KernelPatch32/releases/download/${kernelPatchVersion}/kptools-android")
-    dest(file("${project.projectDir}/libs/armeabi-v7a/libkptools.so"))
-    onlyIfNewer(true)
-    overwrite(true)
-}
-
-tasks.register<Download>("downloadApjni") {
-    src("https://github.com/Arturmes/KernelPatch32/releases/download/${kernelPatchVersion}/libapjni.so")
-    dest(file("${project.projectDir}/libs/armeabi-v7a/libapjni.so"))
-    onlyIfNewer(true)
-    overwrite(true)
-}
-
-tasks.getByName("preBuild").dependsOn(
-    "downloadKpimg",
-    "downloadKpatch",
-    "downloadKptools",
-    "downloadApjni",
-)
-
 // https://github.com/bbqsrc/cargo-ndk
 // cross clippy --manifest-path apd/Cargo.toml --target armv7-linux-androideabi --release
 tasks.register<Exec>("clippyBuild") {

@@ -20,7 +20,9 @@ The patching of Android kernel and Android system.
 
 ## Supported Versions
 
-- ARM64 only
+- This APatch is not yet stable! I don't recommend it as main root method!
+
+- Have armeabi-v7a or Arm32 support
 - Android Kernel Version 3.18 - 6.1
 
 Support for Samsung devices with security protection: planned
@@ -59,17 +61,14 @@ Installation guide (coming soon)
 ### Updates
 - Telegram Channel: [@APatchChannel](https://t.me/APatchChannel)
 
-### Discussions
-- Telegram Group: [@APatchGroup](https://t.me/APatchGroup)
-- 中文: [@APatch_CN_Group](https://t.me/APatch_CN_Group)
-
-
 ### More Information
 
 - [Documents](docs/)
 
 ## Credits
 
+- [bmax121](https://github.com/bmax121) - Original APatch author, owner, and maintainer
+- [APatch](https://github.com/bmax121/APatch) - Official APatch repository
 - [KernelPatch](https://github.com/bmax121/KernelPatch/): The core.
 - [Magisk](https://github.com/topjohnwu/Magisk): magiskboot and magiskpolicy.
 - [KernelSU](https://github.com/tiann/KernelSU): App UI, and magisk module like support.
