@@ -42,7 +42,7 @@ rustix = { git = "https://github.com/Arturmes/rustix", branch = "main", features
 # some android specific dependencies which compiles under unix are also listed here for convenience of coding
 android-properties = { version = "0.2.2", features = ["bionic-deprecated"] }
 procfs = "0.16"
-loopdev = { git = "https://github.com/AndroidPatch/loopdev" }
+loopdev = { git = "https://github.com/Rissu-Projekt/loopdev" }
 
 [target.'cfg(target_os = "android")'.dependencies]
 android_logger = "0.13"
