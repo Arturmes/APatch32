@@ -103,22 +103,22 @@ tasks.register<Download>("downloadKpimg") {
 }
 
 tasks.register<Download>("downloadKpatch") {
-    src("https://github.com/bmax121/KernelPatch/releases/download/${kernelPatchVersion}/kpatch-android")
-    dest(file("${project.projectDir}/libs/arm64-v8a/libkpatch.so"))
+    src("https://github.com/Arturmes/KernelPatch32/releases/download/${kernelPatchVersion}/kpatch-android")
+    dest(file("${project.projectDir}/libs/armeabi-v7a/libkpatch.so"))
     onlyIfNewer(true)
     overwrite(true)
 }
 
 tasks.register<Download>("downloadKptools") {
-    src("https://github.com/bmax121/KernelPatch/releases/download/${kernelPatchVersion}/kptools-android")
-    dest(file("${project.projectDir}/libs/arm64-v8a/libkptools.so"))
+    src("https://github.com/Arturmes/KernelPatch32/releases/download/${kernelPatchVersion}/kptools-android")
+    dest(file("${project.projectDir}/libs/armeabi-v7a/libkptools.so"))
     onlyIfNewer(true)
     overwrite(true)
 }
 
 tasks.register<Download>("downloadApjni") {
-    src("https://github.com/bmax121/KernelPatch/releases/download/${kernelPatchVersion}/libapjni.so")
-    dest(file("${project.projectDir}/libs/arm64-v8a/libapjni.so"))
+    src("https://github.com/Arturmes/KernelPatch32/releases/download/${kernelPatchVersion}/libapjni.so")
+    dest(file("${project.projectDir}/libs/armeabi-v7a/libapjni.so"))
     onlyIfNewer(true)
     overwrite(true)
 }
@@ -131,17 +131,17 @@ tasks.getByName("preBuild").dependsOn(
 )
 
 // https://github.com/bbqsrc/cargo-ndk
-// cargo ndk -t arm64-v8a build --release
-tasks.register<Exec>("cargoBuild") {
-    executable("cargo")
-    args("ndk", "-t", "arm64-v8a", "build", "--release")
+// cross clippy --manifest-path apd/Cargo.toml --target armv7-linux-androideabi --release
+tasks.register<Exec>("clippyBuild") {
+    executable("cross")
+    args("clippy", "--manifest-path", "Cargo.toml", "--target", "armv7-linux-androideabi", "--release")
     workingDir("${project.rootDir}/apd")
 }
 
 tasks.register<Copy>("buildApd") {
-    dependsOn("cargoBuild")
-    from("${project.rootDir}/apd/target/aarch64-linux-android/release/apd")
-    into("${project.projectDir}/libs/arm64-v8a")
+    dependsOn("clippyBuild")
+    from("${project.rootDir}/apd/target/armv7-linux-androideabi/release/apd")
+    into("${project.projectDir}/libs/armeabi-v7a")
     rename("apd", "libapd.so")
 }
 
@@ -149,21 +149,6 @@ tasks.configureEach {
     if (name == "mergeDebugJniLibFolders" || name == "mergeReleaseJniLibFolders") {
         dependsOn("buildApd")
     }
-}
-
-tasks.register<Exec>("cargoClean") {
-    executable("cargo")
-    args("clean")
-    workingDir("${project.rootDir}/apd")
-}
-
-tasks.register<Delete>("apdClean") {
-    dependsOn("cargoClean")
-    delete(file("${project.projectDir}/libs/arm64-v8a/libapd.so"))
-}
-
-tasks.clean {
-    dependsOn("apdClean")
 }
 
 dependencies {

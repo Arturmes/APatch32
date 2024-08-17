@@ -63,6 +63,7 @@ jobs:
         run: |
           rustup default stable
           cargo install cargo-ndk
+          cargo install cross --locked
           rustup target install aarch64-linux-android
 
       - name: Cache Rust
