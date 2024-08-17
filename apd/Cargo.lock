@@ -856,7 +856,7 @@ dependencies = [
 
 [[package]]
 name = "linux-raw-sys"
-version = "0.4.13"
+version = "0.4.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "01cda141df6706de531b6c46c3a33ecca755538219bd484262fa09410c13539c"
 
@@ -1272,7 +1272,7 @@ dependencies = [
  "errno 0.2.8",
  "io-lifetimes",
  "libc",
- "linux-raw-sys 0.1.4",
+ "linux-raw-sys",
  "windows-sys 0.42.0",
 ]
 
@@ -1285,7 +1285,7 @@ dependencies = [
  "bitflags 2.4.1",
  "errno 0.3.8",
  "libc",
- "linux-raw-sys 0.4.13",
+ "linux-raw-sys",
  "windows-sys 0.48.0",
 ]
 
@@ -1298,7 +1298,7 @@ dependencies = [
  "errno 0.3.8",
  "itoa",
  "libc",
- "linux-raw-sys 0.4.13",
+ "linux-raw-sys",
  "once_cell",
  "windows-sys 0.52.0",
 ]
