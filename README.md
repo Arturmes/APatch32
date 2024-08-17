@@ -1,5 +1,5 @@
 <div align="center">
-<a href="https://github.com/bmax121/APatch/releases/latest"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/bmax121/APatch/main/app/src/main/ic_launcher-playstore.png&mask=circle" style="width: 128px;" alt="logo"></a>
+<a href="https://github.com/Arturmes/APatch32/releases/latest"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/bmax121/APatch/main/app/src/main/ic_launcher-playstore.png&mask=circle" style="width: 128px;" alt="logo"></a>
 
 <h1 align="center">APatch</h1>
 
@@ -16,7 +16,7 @@ The patching of Android kernel and Android system.
 - APM: Magisk module like support.
 - KPM: Kernel Patch Module support. (Allow you to inject any code into the kernel, Kernel function inline-hook and syscall-table-hook is available)
 - APatch relies on [KernelPatch](https://github.com/bmax121/KernelPatch/).
-- The source code for both APatch UI and APM has been copied and modified from [KernelSU](https://github.com/tiann/KernelSU).
+- The source code for both APatch UI and APM has been copied and modified from [KernelSU-ARM32](https://github.com/Rissu-Projekt/KernelSU-ARM32).
 
 ## Supported Versions
 
