@@ -110,7 +110,7 @@ dependencies = [
  "regex",
  "retry",
  "rust-embed",
- "rustix 0.38.30",
+ "rustix 0.38.30 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde",
  "serde_json",
  "sha256",
@@ -1066,7 +1066,7 @@ dependencies = [
  "hex",
  "lazy_static",
  "procfs-core",
- "rustix 0.38.21",
+ "rustix 0.38.21 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
