@@ -10,7 +10,7 @@ pub const MAGISKPOLICY_PATH: &str = concatcp!(BINARY_DIR, "magiskpolicy");
 
 #[cfg(target_arch = "arm")]
 #[derive(RustEmbed)]
-#[folder = "../../../../app/libs/armeabi-v7a"]
+#[folder = "/home/runner/work/APatch32/APatch32/app/libs/armeabi-v7a"]
 struct Asset;
 
 pub fn ensure_binaries() -> Result<()> {
