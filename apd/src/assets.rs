@@ -8,7 +8,7 @@ pub const RESETPROP_PATH: &str = concatcp!(BINARY_DIR, "resetprop");
 pub const BUSYBOX_PATH: &str = concatcp!(BINARY_DIR, "busybox");
 pub const MAGISKPOLICY_PATH: &str = concatcp!(BINARY_DIR, "magiskpolicy");
 
-#[cfg(target_arch = "armv7")]
+#[cfg(target_arch = "arm")]
 #[derive(RustEmbed)]
 #[folder = "../app/libs/armeabi-v7a"]
 struct Asset;

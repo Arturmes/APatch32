@@ -57,7 +57,7 @@ fun download(
 }
 
 fun checkNewVersion(): Triple<Int, String, String> {
-    val url = "https://api.github.com/repos/bmax121/APatch/releases/latest"
+    val url = "https://api.github.com/repos/Arturmes/APatch32/releases/latest"
     val defaultValue = Triple(0, "", "")
     runCatching {
         okhttp3.OkHttpClient().newCall(okhttp3.Request.Builder().url(url).build()).execute()
