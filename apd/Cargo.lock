@@ -110,7 +110,7 @@ dependencies = [
  "regex",
  "retry",
  "rust-embed",
- "rustix 0.38.30 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rustix 0.38.30",
  "serde",
  "serde_json",
  "sha256",
@@ -856,6 +856,12 @@ dependencies = [
 
 [[package]]
 name = "linux-raw-sys"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f051f77a7c8e6957c0696eac88f26b0117e54f52d3fc682ab19397a8812846a4"
+
+[[package]]
+name = "linux-raw-sys"
 version = "0.4.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "01cda141df6706de531b6c46c3a33ecca755538219bd484262fa09410c13539c"
@@ -872,7 +878,7 @@ dependencies = [
 [[package]]
 name = "loopdev"
 version = "0.5.0"
-source = "git+https://gitlab.com/Rissu-Projekt/kernelsu/loopdev?branch=loopfix#83018b0f7b4e1ba16c5106a348cfdbb10f90f27d"
+source = "git+https://github.com/AndroidPatch/loopdev#7a921f8d966477a645b1188732fac486c71a68ef"
 dependencies = [
  "errno 0.2.8",
  "libc",
@@ -1066,7 +1072,7 @@ dependencies = [
  "hex",
  "lazy_static",
  "procfs-core",
- "rustix 0.38.21 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rustix 0.38.21",
 ]
 
 [[package]]
@@ -1270,7 +1276,7 @@ dependencies = [
  "errno 0.2.8",
  "io-lifetimes",
  "libc",
- "linux-raw-sys 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "linux-raw-sys 0.1.4",
  "windows-sys 0.42.0",
 ]
 
