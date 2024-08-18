@@ -58,8 +58,8 @@ To help translate APatch or improve existing translations, please use [Weblate](
 Installation guide (coming soon)
 <hr>
 
-### Updates
-- Telegram Channel: [@APatchChannel](https://t.me/APatchChannel)
+### News
+- Telegram Channel: [@mesofmes](https://t.me/mesofmes)
 
 ### More Information
 
