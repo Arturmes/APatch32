@@ -116,7 +116,7 @@ dependencies = [
  "sha256",
  "tempdir",
  "which",
- "zip",
+ "zip 0.6.6",
  "zip-extensions",
 ]
 
