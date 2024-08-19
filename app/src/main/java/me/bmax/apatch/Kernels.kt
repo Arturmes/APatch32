@@ -13,7 +13,7 @@ data class KernelVersion(val major: Int, val patchLevel: Int, val subLevel: Int)
 
     fun isSupport(): Boolean {
         return code() >= KernelVersion(3,18,0).code() &&
-                code() < KernelVersion(6,2,0).code()
+                code() < KernelVersion(4,14,0).code()
     }
 }
 

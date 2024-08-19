@@ -15,7 +15,7 @@ The patching of Android kernel and Android system.
 - A new Kernel-based root solution for Android devices.
 - APM: Magisk module like support.
 - KPM: Kernel Patch Module support. (Allow you to inject any code into the kernel, Kernel function inline-hook and syscall-table-hook is available)
-- APatch relies on [KernelPatch](https://github.com/bmax121/KernelPatch/).
+- APatch relies on [KernelPatch](https://github.com/Arturmes/KernelPatch32/).
 - The source code for both APatch UI and APM has been copied and modified from [KernelSU-ARM32](https://github.com/Rissu-Projekt/KernelSU-ARM32).
 
 ## Supported Versions
@@ -23,7 +23,7 @@ The patching of Android kernel and Android system.
 - This APatch is not yet stable! I don't recommend it as main root method!
 
 - Have armeabi-v7a or Arm32 support
-- Android Kernel Version 3.18 - 6.1
+- Android Kernel Version 3.18 - 4.14
 
 Support for Samsung devices with security protection: planned
 
@@ -47,8 +47,6 @@ To help translate APatch or improve existing translations, please use [Weblate](
 
 [![Translation status](https://hosted.weblate.org/widget/APatch/apatch/horizontal-auto.svg)](https://hosted.weblate.org/engage/APatch/)
 
-[![Translation status](https://hosted.weblate.org/widget/APatch/apatch/287x66-black.png)](https://hosted.weblate.org/engage/APatch/)
-
 </div>
 
 ## Get Help
@@ -69,9 +67,6 @@ Installation guide (coming soon)
 
 - [bmax121](https://github.com/bmax121) - Original APatch author, owner, and maintainer
 - [APatch](https://github.com/bmax121/APatch) - Official APatch repository
-- [KernelPatch](https://github.com/bmax121/KernelPatch/): The core.
-- [Magisk](https://github.com/topjohnwu/Magisk): magiskboot and magiskpolicy.
-- [KernelSU](https://github.com/tiann/KernelSU): App UI, and magisk module like support.
 
 ## License
 
