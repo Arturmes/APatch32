@@ -1,5 +1,6 @@
 package me.bmax.apatch.util
 
+import android.util.Log
 import com.topjohnwu.superuser.ShellUtils
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.BuildConfig
@@ -49,8 +50,8 @@ object Version {
 
 
     private fun installedKPatchVString(): String {
-        val result = ShellUtils.fastCmd("${APApplication.SUPERCMD} ${APApplication.superKey} " +
-                "${APApplication.KPATCH_PATH} ${APApplication.superKey} -v")
+        val resultShell = rootShellForResult("${APApplication.APD_PATH} -V")
+        val result = resultShell.out.toString()
         return result.trim().ifEmpty { "0" }
     }
 
@@ -59,21 +60,24 @@ object Version {
     }
 
     private fun installedApdVString(): String {
-        val result = ShellUtils.fastCmd("${APApplication.SUPERCMD} ${APApplication.superKey} " +
-                "${APApplication.APD_PATH} -V")
-        installedApdVString = if(result.trim().isEmpty()) "0" else {
+        val resultShell = rootShellForResult("${APApplication.APD_PATH} -V")
+        installedApdVString = if (resultShell.isSuccess) {
+            val result = resultShell.out.toString()
+            Log.i("APatch", "[installedApdVString@Version] resultFromShell: ${result}")
             Regex("\\d+").find(result)!!.value
+        } else {
+            "0"
         }
         return installedApdVString
     }
 
     fun installedApdVUInt(): Int {
-        val vstr = installedApdVString()
-        installedApdVInt = vstr.toInt()
+        installedApdVInt = installedApdVString().toInt()
         return installedApdVInt
     }
 
 
+    @Suppress("DEPRECATION")
     fun getManagerVersion(): Pair<String, Int> {
         val packageInfo = apApp.packageManager.getPackageInfo(apApp.packageName, 0)
         return Pair(packageInfo.versionName, packageInfo.versionCode)

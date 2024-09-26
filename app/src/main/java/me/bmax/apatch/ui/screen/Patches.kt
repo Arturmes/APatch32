@@ -20,18 +20,27 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExtendedFloatingActionButton
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.outlined.Cached
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -50,6 +59,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
@@ -68,7 +80,7 @@ private const val TAG = "Patches"
 
 @Destination
 @Composable
-fun Patches(navigator: DestinationsNavigator, mode: PatchesViewModel.PatchMode) {
+fun Patches(mode: PatchesViewModel.PatchMode) {
     val permissionRequest = remember { mutableStateOf(false)  }
     val scrollState = rememberScrollState()
     val scope = rememberCoroutineScope()
@@ -126,8 +138,17 @@ fun Patches(navigator: DestinationsNavigator, mode: PatchesViewModel.PatchMode) 
             ErrorView(viewModel.error)
             KernelPatchImageView(viewModel.kpimgInfo)
 
+            if (mode == PatchesViewModel.PatchMode.PATCH_ONLY && selectedBootImage != null && viewModel.kimgInfo.banner.isEmpty()) {
+                viewModel.copyAndParseBootimg(selectedBootImage!!)
+                // Fix endless loop. It's not normal if (parse done && working thread is not working) but banner still null
+                // Leave user re-choose
+                if (!viewModel.running && viewModel.kimgInfo.banner.isEmpty()) {
+                    selectedBootImage = null
+                }
+            }
+
             // select boot.img
-            if(mode == PatchesViewModel.PatchMode.PATCH_ONLY && viewModel.kimgInfo.banner.isEmpty()) {
+            if (mode == PatchesViewModel.PatchMode.PATCH_ONLY && viewModel.kimgInfo.banner.isEmpty()) {
                 SelectFileButton(
                     text = stringResource(id = R.string.patch_select_bootimg_btn),
                     onSelected = { data, uri ->
@@ -259,29 +280,26 @@ private fun ExtraItem(extra: KPModel.IExtraInfo, existed: Boolean, onDelete: ()-
                 .fillMaxWidth()
                 .padding(12.dp),
         ) {
-            Row {
+            Row ( modifier = Modifier.align(Alignment.CenterHorizontally)) {
                 Text(text = stringResource(id =
                 if(existed) R.string.patch_item_existed_extra_kpm else R.string.patch_item_new_extra_kpm) +
-                        " " + extra.type.toString().lowercase(),
+                        " " + extra.type.toString().uppercase(),
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier
-                        .padding(end = 8.dp)
-                        .weight(1f)
-                        .wrapContentWidth(Alignment.CenterHorizontally))
-                Icon(imageVector = Icons.Default.Close,
+                        .weight(1f).wrapContentWidth(Alignment.CenterHorizontally))
+                Icon(imageVector = Icons.Default.Delete,
                     contentDescription = "Delete",
-                    tint = Color.Red,
                     modifier = Modifier
                         .padding(end = 8.dp)
                         .clickable { onDelete() })
             }
             if(extra.type == KPModel.ExtraType.KPM) {
                 val kpmInfo: KPModel.KPMInfo = extra as KPModel.KPMInfo
-                Text(text = stringResource(id = R.string.patch_item_extra_name) + kpmInfo.name, style = MaterialTheme.typography.bodyMedium)
-                Text(text = stringResource(id = R.string.patch_item_extra_version) + kpmInfo.version, style = MaterialTheme.typography.bodyMedium)
-                Text(text = stringResource(id = R.string.patch_item_extra_kpm_license) + kpmInfo.license, style = MaterialTheme.typography.bodyMedium)
-                Text(text = stringResource(id = R.string.patch_item_extra_author) + kpmInfo.author, style = MaterialTheme.typography.bodyMedium)
-                Text(text = stringResource(id = R.string.patch_item_extra_kpm_desciption) + kpmInfo.description, style = MaterialTheme.typography.bodyMedium)
+                Text(text = "${stringResource(id = R.string.patch_item_extra_name)} ${kpmInfo.name}" , style = MaterialTheme.typography.bodyMedium)
+                Text(text = "${stringResource(id = R.string.patch_item_extra_version)} ${kpmInfo.version}", style = MaterialTheme.typography.bodyMedium)
+                Text(text = "${stringResource(id = R.string.patch_item_extra_kpm_license)} ${kpmInfo.license}", style = MaterialTheme.typography.bodyMedium)
+                Text(text = "${stringResource(id = R.string.patch_item_extra_author)} ${kpmInfo.author}", style = MaterialTheme.typography.bodyMedium)
+                Text(text = "${stringResource(id = R.string.patch_item_extra_kpm_desciption)} ${kpmInfo.description}", style = MaterialTheme.typography.bodyMedium)
                 var event by remember { mutableStateOf(kpmInfo.event) }
                 Row(modifier = Modifier
                     .fillMaxWidth()
@@ -325,8 +343,9 @@ private fun ExtraItem(extra: KPModel.IExtraInfo, existed: Boolean, onDelete: ()-
 
 @Composable
 private fun SetSuperKeyView(viewModel: PatchesViewModel) {
-    var skey by remember { mutableStateOf(viewModel.kpimgInfo.superKey) }
-    var showWarn by remember { mutableStateOf(!viewModel.keyChecked(skey))}
+    var skey by remember { mutableStateOf(viewModel.superkey) }
+    var showWarn by remember { mutableStateOf(!viewModel.checkSuperKeyValidation(skey))}
+    var keyVisible by remember { mutableStateOf(false) }
     ElevatedCard(
         colors = CardDefaults.elevatedCardColors(containerColor = run {
             MaterialTheme.colorScheme.secondaryContainer
@@ -335,7 +354,7 @@ private fun SetSuperKeyView(viewModel: PatchesViewModel) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
+                .padding(12.dp),
         ) {
             Column(
                 modifier = Modifier
@@ -346,26 +365,51 @@ private fun SetSuperKeyView(viewModel: PatchesViewModel) {
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
-            if(showWarn) {
+            if (showWarn) {
+                Spacer(modifier = Modifier.height(3.dp))
                 Text(color = Color.Red,
                     text = stringResource(id = R.string.patch_item_set_skey_label),
                     style = MaterialTheme.typography.bodyMedium)
             }
-            TextField(modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 6.dp),
-                value = skey,
-                onValueChange = {
-                    skey = it
-                    if(viewModel.keyChecked(it)){
-                        viewModel.superkey = it
-                        showWarn = false
-                    } else {
-                        viewModel.superkey = ""
-                        showWarn = true
+            Column {
+                //Spacer(modifier = Modifier.height(8.dp))
+                Box(
+                    contentAlignment = Alignment.CenterEnd,
+                ) {
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 6.dp),
+                        value = skey,
+                        label = { Text(stringResource(id = R.string.patch_set_superkey)) },
+                        visualTransformation = if (keyVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                        shape = RoundedCornerShape(50.0f),
+                        onValueChange = {
+                            skey = it
+                            if (viewModel.checkSuperKeyValidation(it)) {
+                                viewModel.superkey = it
+                                showWarn = false
+                            } else {
+                                viewModel.superkey = ""
+                                showWarn = true
+                            }
+                        },
+                    )
+                    IconButton(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .padding(top = 15.dp, end = 5.dp),
+                        onClick = { keyVisible = !keyVisible }
+                    ) {
+                        Icon(
+                            imageVector = if (keyVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                            contentDescription = null,
+                            tint = Color.Gray
+                        )
                     }
-                },
-            )
+                }
+            }
         }
     }
 }
