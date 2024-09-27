@@ -1,6 +1,6 @@
 use anyhow::Result;
 use const_format::concatcp;
-use rust_embed::RustEmbed;
+use rust_embed::Embed;
 
 use crate::{defs::BINARY_DIR, utils};
 
@@ -9,7 +9,7 @@ pub const BUSYBOX_PATH: &str = concatcp!(BINARY_DIR, "busybox");
 pub const MAGISKPOLICY_PATH: &str = concatcp!(BINARY_DIR, "magiskpolicy");
 
 #[cfg(target_arch = "arm")]
-#[derive(RustEmbed)]
+#[derive(Embed)]
 #[folder = "/home/runner/work/APatch32/APatch32/app/libs/armeabi-v7a"]
 struct Asset;
 
